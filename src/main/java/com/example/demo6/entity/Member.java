@@ -1,5 +1,6 @@
 package com.example.demo6.entity;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import java.time.*;
@@ -10,6 +11,7 @@ import java.time.*;
 @Builder // 빌더가 있으면 All, NO 추가
 public class Member {
   private String username;
+  @JsonIgnore // 출력이 절대 안나감
   private String password;
   private String email;
   // 프로필 사진 이름
