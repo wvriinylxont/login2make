@@ -3,6 +3,7 @@ package com.example.demo6.dto;
 import com.example.demo6.entity.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.web.multipart.*;
 
 
 public class MemberDto {
@@ -34,11 +35,21 @@ public class MemberDto {
     @NotEmpty
     private String email;
     // MultipartFile : 파일을 업로드 했을때의 타입
-    private String profile;
+    private MultipartFile profile;
 
     // DTO를 Entity로 변환
-    public Member toEntity(String encodedPassword) {
-      return  Member.builder().username(username).password(encodedPassword).email(email).build();
+    public Member toEntity(String encodedPassword, String base64Image) {
+      return  Member.builder().username(username).password(encodedPassword).email(email).profile(base64Image).build();
     }
+  }
+
+  @Data
+  public static class GeneratePassword {
+    @NotEmpty
+    @Pattern(regexp = "^[a-z0-9]{6,10}$")
+    private String username;
+    @NotEmpty
+    @Email
+    private String email;
   }
 }
