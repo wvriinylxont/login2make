@@ -19,7 +19,7 @@ public class PostDaoTest {
     }
   }
 
-  @Test
+//  @Test
   public void 페이징쿼리테스트() {
     // 집에서 다시 할때는 페이지가 1이므로 123~114
     // 페이지가 1이므로 124~115
@@ -28,5 +28,10 @@ public class PostDaoTest {
     // 집에서 다시 할때는 페이지가 13이면 3~1
     // 페이지가 13이면 4~2
     postDao.findAll(13,10).forEach(post->System.out.println(post.getPno()));
+  }
+
+  @Test
+  public void findByWithCommentsTest() {
+    System.out.println(postDao.findByPnoWithComments(10));
   }
 }

@@ -1,7 +1,6 @@
 package com.example.demo6.controller;
 
 import com.example.demo6.dto.*;
-import com.example.demo6.entity.*;
 import com.example.demo6.service.*;
 import io.swagger.v3.oas.annotations.*;
 import org.springframework.beans.factory.annotation.*;
@@ -10,6 +9,7 @@ import org.springframework.validation.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.*;
+import java.util.*;
 
 @Validated
 @RestController
@@ -27,9 +27,9 @@ public class PostController {
   // @RequestParam이나 @ModelAttribute에서는 사용자가 값을 넘기지 않으면 null이 되고 널체크로 오류를 발견한다
   // @PathVariable은 사용자가 넘기는 값이 주소의 일부 !!
   // - 만약 바로 아래 주소에서 pno룰 안넘겼다면 get / posts. 즉 주소가 아예 다르다
-  @Operation(summary = "페이징", description = "글읽기")
+  @Operation(summary = "글읽기", description = "글읽기")
   @GetMapping("/posts/post")
-  public ResponseEntity<Post> findByPno(@RequestParam int pno, Principal principal) {
+  public ResponseEntity<Map<String, Object>> findByPno(@RequestParam int pno, Principal principal) {
     // 로그인했으면 로그인 아이디, 비로그인이면 null을 대입
     String loginId = principal==null? null : principal.getName();
     return ResponseEntity.ok(service.findByPno(pno, loginId));
