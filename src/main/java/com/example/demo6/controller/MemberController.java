@@ -40,6 +40,7 @@ public class MemberController {
   @Operation(summary = "회원가입", description = "회원가입 및 프로필 사진 업로드")
   @PostMapping(value="/api/members/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<Member> signup(@ModelAttribute @Valid MemberDto.Create dto, BindingResult br) {
+    System.out.println(dto);
     Member member = service.signup(dto);
     return ResponseEntity.status(200).body(member);
   }
