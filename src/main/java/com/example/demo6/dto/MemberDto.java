@@ -1,9 +1,12 @@
 package com.example.demo6.dto;
 
 import com.example.demo6.entity.*;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.web.multipart.*;
+
+import java.time.*;
 
 
 public class MemberDto {
@@ -51,5 +54,28 @@ public class MemberDto {
     @NotEmpty
     @Email
     private String email;
+  }
+
+  @Data
+  @AllArgsConstructor
+  public static class Read {
+    private String username;
+    private String email;
+    private String profile;
+    @JsonFormat(pattern = "yyyy년 MM월 dd일")
+    private LocalDate joinday;
+    // 가입기간
+    private long days;
+    private Level level;
+  }
+
+  @Data
+  public static class PasswordChange {
+    @NotEmpty
+    @Pattern(regexp = "[a-zA-Z0-9]{6,10}$")
+    private String currentPassword;
+    @NotEmpty
+    @Pattern(regexp = "[a-zA-Z0-9]{6,10}$")
+    private String newPassword;
   }
 }

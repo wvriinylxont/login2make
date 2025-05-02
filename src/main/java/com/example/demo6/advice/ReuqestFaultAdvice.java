@@ -1,15 +1,18 @@
 package com.example.demo6.advice;
 
-import com.example.demo6.exception.*;
-import jakarta.validation.*;
 import org.springframework.http.*;
+import org.springframework.web.*;
 import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.*;
 import org.springframework.web.servlet.resource.*;
 
 @RestControllerAdvice
-public class CustomControllerAdvice {
+public class ReuqestFaultAdvice {
+  // 401 : 인증이 필요하다 -> 스프링 시큐리티
+
+  // 403 인가(권한확인)
+  
   // 404 처리
   @ExceptionHandler(NoResourceFoundException.class)
   public ResponseEntity<String> handleState404(NoResourceFoundException e) {
@@ -34,15 +37,9 @@ public class CustomControllerAdvice {
     return ResponseEntity.status(400).body(e.getMessage());
   }
 
-  // 검증 실패에 대한 예외처리
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<String> constraintViolationException() {
-    return ResponseEntity.status(409).body("잘못된 입력 형식");
-  }
-  
-  // 사용자 정의 : 엔팉티 클래스(회원, 글 , 댓글)가 없을때
-  @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity<String> entityNotFoundException(EntityNotFoundException e) {
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+  // 405 : 잘못된 메소드
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public ResponseEntity<String> handState405() {
+    return ResponseEntity.status(4405).body("잘못된 메소드");
   }
 }
