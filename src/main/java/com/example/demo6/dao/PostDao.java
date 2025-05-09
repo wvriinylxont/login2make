@@ -1,5 +1,6 @@
 package com.example.demo6.dao;
 
+import com.example.demo6.dto.*;
 import com.example.demo6.entity.*;
 import org.apache.ibatis.annotations.*;
 
@@ -19,4 +20,10 @@ public interface PostDao {
   Optional<Post> findByPno(int pno);
 
   Optional<Map<String, Object>> findByPnoWithComments(int pno);
+
+  @Update("update posts set title=#{title}, content=#{content} where pno=#{pno}")
+  void update(PostDto.Update dto);
+
+  @Delete("delete from posts where pno=#{pno}")
+  void delete(Integer pno);
 }

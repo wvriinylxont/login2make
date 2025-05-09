@@ -1,6 +1,7 @@
 package com.example.demo6.dto;
 
 import com.example.demo6.entity.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.*;
@@ -20,9 +21,26 @@ public class PostDto {
   }
   
   // 글을 작성하는 DTO
-  public static class Create {
-    
+  @Data
+  public static class PostCreateDto {
+    @NotEmpty
+    private String title;
+    @NotEmpty
+    private String content;
+
+    public Post toEntity(String loginId) {
+      return Post.builder().title(title).content(content).writer(loginId).build();
+    }
   }
   
-  // 기타 DTO들 ..
+  // 글 변경 DTO
+  @Data
+  public static class Update {
+    @NotNull
+    private Integer pno;
+    @NotEmpty
+    private String title;
+    @NotEmpty
+    private String content;
+  }
 }
