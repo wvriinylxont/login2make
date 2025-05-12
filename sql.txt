@@ -50,3 +50,9 @@ create table posts_members (
 	username varchar2(10 char),
 	constraint posts_member_pk primary key(pno, username)
 );
+
+create table posts_members_bad (
+	pno number(6),
+	username varchar2(10 char),
+	constraint posts_member_bad_pk primary key(pno, username)
+);

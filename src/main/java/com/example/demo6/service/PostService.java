@@ -17,6 +17,8 @@ public class PostService {
   private PostDao postDao;
   @Autowired
   private CommentDao commentDao;
+  @Autowired
+  private PostMemberGoodDao postMemberGoodDao;
   
   public PostDto.Pages findAll(int pageno, int pagesize) {
     int totalcount = postDao.count();
@@ -60,5 +62,26 @@ public class PostService {
     if(!post.getWriter().equals(loginId))
       throw new JobFailException("잘못된 작업입니다");
     postDao.delete(pno);
+  }
+
+  public int 추천(int pno, String loginId) {
+    // 자기가 작성한 글은 추천 할 수 X
+    // 비로그인이면 추천 X -> @PreAuthrize()로 필터링되서 여기까지 안온다
+    // 자기가 작성하지 않은 글은 추천할 수 있다
+
+    // 글이 없으면 예외 처리
+    // 1. 자기가 작성한 글이면 예외처리
+    // 2. 이미 추천한 글이면 예외처리
+    // 3. 추천하지 않은 글이면 추천 후 새로운 추천수를 리턴
+    Post post = postDao.findByPno(pno).orElseThrow(()->new EntityNotFoundException("글을 찾을 수 없습니다"));
+    if(post.getWriter().equals(loginId))
+      throw new JobFailException("자신의 글은 추천할 수 없습니다");
+    boolean 추천했니 = postMemberGoodDao.existsByPnoAndUsername(pno, loginId);
+    if(추천했니)
+      throw new JobFailException("이미 추천했습니다");
+    postMemberGoodDao.save(pno, loginId);
+    postDao.increaseGoodCnt(pno);
+    // 경우에 따라 추천 수가 불일치 할 수 있다
+    return postDao.findGoodCntByPno(pno).get();
   }
 }
